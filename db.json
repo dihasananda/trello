@@ -19,19 +19,28 @@
   "card": [
     {
       "name": "satu",
+      "list": [],
       "id": 1
     },
     {
       "name": "dua",
+      "list": [{"namelist":"dua","id":1}],
       "id": 2
     },
     {
       "name": "tiga",
+      "list": [],
       "id": 3
     },
     {
       "name": "empat",
+      "list": [],
       "id": 4
+    },
+    {
+      "name": "da",
+      "list": [],
+      "id": 5
     }
   ]
 }

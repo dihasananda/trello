@@ -7,7 +7,7 @@ export default function Trello() {
 
     useEffect(() => {
         getData()
-    }, []) 
+    }, [])
 
     //untuk mengambil data
     const getData = () => {
@@ -21,7 +21,19 @@ export default function Trello() {
         e.preventDefault() //biar tidak sering refresh
         const value = e.target.submit.value
         // console.log(e.target.submit.value)
-        axios.post('http://localhost:3001/card', { name: value })
+        axios.post('http://localhost:3001/card', { name: value, list: [] })
+            .then(() => {
+                getData()
+                e.target.submit.value = ''
+            })
+    }
+
+    //untuk memasukkan list
+    const handleSubmitList = e => {
+        e.preventDefault() //biar tidak sering refresh
+        const value = e.target.submit0.value
+        // console.log(e.target.submit0.value)
+        axios.post('http://localhost:3001/card/list', { namelist: value })
             .then(() => {
                 getData()
                 e.target.submit.value = ''
@@ -40,11 +52,11 @@ export default function Trello() {
         e.preventDefault() //biar tidak merefresh
         // const value = e.target.save.value
         const value = e.target.save.value
-        axios.patch(`http://localhost:3001/card/${data[edit].id}`,{name:value})
-        .then(()=> {
-            getData()
-            setEdit(null)
-        })
+        axios.patch(`http://localhost:3001/card/${data[edit].id}`, { name: value })
+            .then(() => {
+                getData()
+                setEdit(null)
+            })
     }
     return (
         <div className='p-5'>
@@ -55,18 +67,45 @@ export default function Trello() {
                 <button type='submit'>submit</button>
             </form>
 
-            <div>
+            <div className='grid grid-cols-3 gap-5 w-full'>
                 {data.map((value, index) => {
-                    return ( 
-                        edit === index ?
-                        <form key={index} onSubmit={handleEdit}>
-                            <input name='save' defaultValue={value.name}/> <button type='submit'> save</button>
-                        </form>
-                        :
+                    return (
                         <div key={index}>
-                            {value.name}
-                            <button onClick={() => handleDelete(value.id)}> delete</button>
-                            <button onClick={() => setEdit(index)}> edit</button>
+                            {edit === index ?
+                                <form key={index} onSubmit={handleEdit}>
+                                    <input name='save' defaultValue={value.name} />
+                                    <button type='submit'> save</button>
+                                </form>
+                                :
+                                <div key={index} className='grid grid-cols-3 gap-2 bg-blue-50'>
+                                    <div>{value.name}</div>
+                                    <button onClick={() => handleDelete(value.id)}>delete</button>
+                                    <button onClick={() => setEdit(index)}>edit</button>
+                                </div>
+                            }
+                            {/* submit data */}
+                            <form onSubmit={handleSubmitList} >
+                                <input name={`submit${index}`} />
+                                <button type='submit'>submit</button>
+                            </form>
+                            {value.list.map((value2, index2) => {
+                                return (
+                                    <div key={index2}>{value2.name}
+                                        {edit === index2 ?
+                                            <form key={index2} onSubmit={handleEdit}>
+                                                <input name='save' defaultValue={value2.name} />
+                                                <button type='submit'> save</button>
+                                            </form>
+                                            :
+                                            <div key={index2} className='grid grid-cols-3 gap-2 bg-red-50'>
+                                                <div>{value2.name}</div>
+                                                <button onClick={() => handleDelete(value2.id)}>delete</button>
+                                                <button onClick={() => setEdit(index2)}>edit</button>
+                                            </div>
+                                        }
+                                    </div>
+                                )
+                            })}
                         </div>
                     )
                 })}
