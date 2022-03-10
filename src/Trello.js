@@ -7,7 +7,7 @@ export default function Trello() {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, []) 
 
     //untuk mengambil data
     const getData = () => {
