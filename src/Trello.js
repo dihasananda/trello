@@ -11,7 +11,7 @@ export default function Trello() {
 
     //untuk mengambil data
     const getData = () => {
-        console.log('getdata')
+        // console.log('getdata')
         axios.get('http://localhost:3001/card')
             .then(hasil => setData(hasil.data))
     }
@@ -20,6 +20,7 @@ export default function Trello() {
     const handleSubmit = e => {
         e.preventDefault() //biar tidak sering refresh
         const value = e.target.submit.value
+        // console.log(e.target.submit.value)
         axios.post('http://localhost:3001/card', { name: value })
             .then(() => {
                 getData()
@@ -33,6 +34,18 @@ export default function Trello() {
         axios.delete(`http://localhost:3001/card/${id}`)
             .then(() => getData())
     }
+
+    //menyimpan data yang sudah diedit
+    const handleEdit = e => {
+        e.preventDefault() //biar tidak merefresh
+        // const value = e.target.save.value
+        const value = e.target.save.value
+        axios.patch(`http://localhost:3001/card/${data[edit].id}`,{name:value})
+        .then(()=> {
+            getData()
+            setEdit(null)
+        })
+    }
     return (
         <div className='p-5'>trello
             {/* submit data */}
@@ -45,13 +58,14 @@ export default function Trello() {
                 {data.map((value, index) => {
                     return ( 
                         edit === index ?
-                        <form key={index}>
-                            <input/> <span> save</span>
+                        <form key={index} onSubmit={handleEdit}>
+                            <input name='save' defaultValue={value.name}/> <button type='submit'> save</button>
                         </form>
-                        : <div key={index}>
+                        :
+                        <div key={index}>
                             {value.name}
-                            <span onClick={() => handleDelete(value.id)}> x</span>
-                            <span onClick={() => setEdit(index)}> edit</span>
+                            <button onClick={() => handleDelete(value.id)}> delete</button>
+                            <button onClick={() => setEdit(index)}> edit</button>
                         </div>
                     )
                 })}

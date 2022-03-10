@@ -36,6 +36,26 @@
     {
       "name": "lima",
       "id": 5
+    },
+    {
+      "name": "enam",
+      "id": 6
+    },
+    {
+      "name": "tujuh",
+      "id": 7
+    },
+    {
+      "name": "delapan",
+      "id": 8
+    },
+    {
+      "name": "sembilan",
+      "id": 9
+    },
+    {
+      "name": "sepuluh",
+      "id": 10
     }
   ]
 }
