@@ -47,7 +47,8 @@ export default function Trello() {
         })
     }
     return (
-        <div className='p-5'>trello
+        <div className='p-5'>
+            <div className='text-center w-full text-xl'>Aplikasi Trello</div>
             {/* submit data */}
             <form onSubmit={handleSubmit} >
                 <input name='submit' />
